@@ -1,60 +1,67 @@
-﻿// Lab3 - Kalkulator.cpp : Ten plik zawiera funkcję „main”. W nim rozpoczyna się i kończy wykonywanie programu.
-//
-
-#include <iostream>
+﻿#include <iostream>
 using namespace std;
-double mem;
-bool mem_used;
+double mem; //Akumulator
+bool mem_used; //Określa czy akumulator jest aktualnie używany
+bool error_occured;
 
-double add(double a, double b);
-double sub(double a, double b);
-double mult(double a, double b);
-double div(double a, double b);
-double modulo(double a, double b);
-void menu();
-void erase();
+double add(double a, double b); //Dodawanie 
+double sub(double a, double b); //Odejmowanie
+double mult(double a, double b); //Mnożenie
+double div(double a, double b); //Dzielenie
+double modulo(double a, double b); //Modulo
+void menu(); //Wyświetlanie menu
+void kasuj(); //Czyszczenie akumulatora
 void oblicz(int tryb, double liczba1, double liczba2);
-void err(int code);
+void err(int code); //Obsługa błędów
 
 void menu() {
-    int n;
+    error_occured = 0;
+    int tryb;
     double a;
-    double b;
-    double wynik;
-    cout << "Wybierz operacje"<<endl<<"1) +"<<endl<<"2) -"<<endl<<"3) *"<<endl<<"4) /"<<endl<<"5) %"<<endl<<"6) Wyczyść M";
-    cin >> n;
-    if (mem_used == 0) {
-        cout << "Wybierz 2 liczby na której chcesz wykonać operacje: " << endl;
+    cout << "Wybierz operacje:"<<endl<<"1) +"<<endl<<"2) -"<<endl<<"3) *"<<endl<<"4) /"<<endl<<"5) %"<<endl<<"6) Czyść"<<endl;
+    cin >> tryb;
+    if (tryb == 6) {
+        kasuj();
+        return;
+    }
+    else if (mem_used == 0) {
+        double b;
+        cout << "Podaj 2 liczby na której chcesz wykonać operacje: ";
         cin >> a;
         cin >> b;
+        oblicz(tryb, a, b);
+        mem_used = 1;
     }
-    cout << "1) Wyświetl" << endl << "2) Zapisz do mem" << endl << "3) Zapisz do mem i wyświetl";
-    switch ()
-    {
-    default:
-        break;
+    else {
+        cout << "Liczba: ";
+        cin >> a;
+        oblicz(tryb, mem, a);
+    }
+    if (error_occured == 0) {
+        cout << "Wynik: " << mem << endl;
     }
 }
 
 void oblicz(int tryb, double liczba1, double liczba2) {
     switch (tryb) {
     case 1:
-        wynik = add(liczba1, liczba2);
+        mem = add(liczba1, liczba2);
         break;
     case 2:
-        wynik = sub(a, b);
+        mem = sub(liczba1, liczba2);
         break;
     case 3:
-        wynik = mult(a, b);
+        mem = mult(liczba1, liczba2);
         break;
     case 4:
-        wynik = div(a, b);
+        mem = div(liczba1, liczba2);
         break;
     case 5:
-        wynik = modulo(a, b);
-    case 6:
-        erase();
+        mem = modulo(liczba1, liczba2);
+    default:
+        err(2);
         break;
+    }
 }
 
 //Funkcje operacji
@@ -71,18 +78,44 @@ double mult(double a, double b){
 }
 
 double div(double a, double b){
+    if (b == 0) {
+        err(1);
+        return a;
+    }
     return a / b;
 }
 
 double modulo(double a, double b){
-    return a - (int)(a / b) * b;
+    if (b == 0) {
+        err(1);
+        return a;
+    }
+    return (int)a % (int)b;
 }
 
+//Funkcje wspomagające
+void err(int code) {
+    kasuj();
+    switch (code)
+    {
+    case 1:
+        cerr << "BŁĄD: Nie można podzielić przez zero.";
+        break;
+    case 2:
+        cerr << "BŁĄD: Zła operacja.";
+        break;
+    default:
+        break;
+    }
+    cout << endl;
+    error_occured = 1;
+}
 
-void kasuj() {
+void kasuj() { 
     mem = 0;
     mem_used = 0;
 }
+
 
 int main()
 {
@@ -90,14 +123,3 @@ int main()
         menu();
     }
 }
-
-// Uruchomienie programu: Ctrl + F5 lub menu Debugowanie > Uruchom bez debugowania
-// Debugowanie programu: F5 lub menu Debugowanie > Rozpocznij debugowanie
-
-// Porady dotyczące rozpoczynania pracy:
-//   1. Użyj okna Eksploratora rozwiązań, aby dodać pliki i zarządzać nimi
-//   2. Użyj okna programu Team Explorer, aby nawiązać połączenie z kontrolą źródła
-//   3. Użyj okna Dane wyjściowe, aby sprawdzić dane wyjściowe kompilacji i inne komunikaty
-//   4. Użyj okna Lista błędów, aby zobaczyć błędy
-//   5. Wybierz pozycję Projekt > Dodaj nowy element, aby utworzyć nowe pliki kodu, lub wybierz pozycję Projekt > Dodaj istniejący element, aby dodać istniejące pliku kodu do projektu
-//   6. Aby w przyszłości ponownie otworzyć ten projekt, przejdź do pozycji Plik > Otwórz > Projekt i wybierz plik sln

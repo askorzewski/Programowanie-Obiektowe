@@ -18,7 +18,7 @@ void menu() {
     error_occured = 0;
     int tryb;
     double a;
-    cout << "Wybierz operacje:"<<endl<<"1) +"<<endl<<"2) -"<<endl<<"3) *"<<endl<<"4) /"<<endl<<"5) %"<<endl<<"6) Czyść"<<endl;
+    cout << "Wybierz operacje:"<<endl<<"1) +"<<endl<<"2) -"<<endl<<"3) *"<<endl<<"4) /"<<endl<<"5) %"<<endl<<"6) Czyszczenie"<<endl;
     cin >> tryb;
     if (tryb == 6) {
         kasuj();
@@ -26,7 +26,7 @@ void menu() {
     }
     else if (mem_used == 0) {
         double b;
-        cout << "Podaj 2 liczby na której chcesz wykonać operacje: ";
+        cout << "Podaj 2 liczby na ktorych chcesz wykonac operacje: ";
         cin >> a;
         cin >> b;
         oblicz(tryb, a, b);
@@ -37,9 +37,11 @@ void menu() {
         cin >> a;
         oblicz(tryb, mem, a);
     }
-    if (error_occured == 0) {
-        cout << "Wynik: " << mem << endl;
+    if (error_occured == 1) {
+        return;
     }
+    cout << "Wynik: " << mem << endl;
+    
 }
 
 void oblicz(int tryb, double liczba1, double liczba2) {
@@ -58,6 +60,7 @@ void oblicz(int tryb, double liczba1, double liczba2) {
         break;
     case 5:
         mem = modulo(liczba1, liczba2);
+        break;
     default:
         err(2);
         break;
@@ -90,7 +93,8 @@ double modulo(double a, double b){
         err(1);
         return a;
     }
-    return (int)a % (int)b;
+    //return static_cast<int>(a)% static_cast<int>(b);
+    return a - static_cast<int>(a / b) * b;
 }
 
 //Funkcje wspomagające
@@ -99,10 +103,10 @@ void err(int code) {
     switch (code)
     {
     case 1:
-        cerr << "BŁĄD: Nie można podzielić przez zero.";
+        cerr << "BLAD: Nie można podzielic przez zero.";
         break;
     case 2:
-        cerr << "BŁĄD: Zła operacja.";
+        cerr << "BLAD: Zla operacja.";
         break;
     default:
         break;

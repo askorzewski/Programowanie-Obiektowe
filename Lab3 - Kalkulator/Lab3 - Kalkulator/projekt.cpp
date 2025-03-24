@@ -36,6 +36,10 @@ class Kalkulator {
         return a - static_cast<int>(a / b) * b;
     };
 
+    void system(int baza, double wartosc) {
+
+    };
+
     void oblicz(int tryb, double liczba1, double liczba2) {
         switch (tryb) {
         case 1:
@@ -53,6 +57,9 @@ class Kalkulator {
         case 5:
             mem = modulo(liczba1, liczba2);
             break;
+        case 6:
+            system(liczba1, liczba2);
+            break;
         default:
             err(2);
             break;
@@ -64,12 +71,12 @@ class Kalkulator {
         error_occured = 0;
         int tryb;
         double a;
-        cout << "Wybierz operacje:" << endl << "1) +" << endl << "2) -" << endl << "3) *" << endl << "4) /" << endl << "5) %" << endl << "6) Czyszczenie" <<endl << "Aby wyjsc kliknij 0" << endl;
+        cout << "Wybierz operacje:" << endl << "1) +" << endl << "2) -" << endl << "3) *" << endl << "4) /" << endl << "5) %" << endl <<"6) Zamiana systemu liczbowego na 10 (wartosc calkowita, baza)"<< endl <<"7) Czyszczenie" <<endl << "Aby wyjsc kliknij 0" << endl;
         cin >> tryb;
         if (tryb == 0) {
             return 0;
         }
-        if (tryb == 6) {
+        if (tryb == 7) {
             kasuj();
             return 1;
         }
